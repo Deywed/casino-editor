@@ -1,0 +1,14 @@
+.casino-editor-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.casino-editor-background {
+  position: absolute;
+  inset: 0;
+  background-image: url("../../assets/bacground_2.png");
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px) brightness(0.7);
+}
