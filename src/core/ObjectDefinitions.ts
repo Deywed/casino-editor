@@ -15,12 +15,12 @@ export interface CasinoObjectInstance {
     originY: number;
 }
 
-export const OBJECT_CATALOG: Record<string, CsinoObjectDef> = {
+export const OBJECT_CATALOG: Record<string, CasinoObjectDef> = {
     slot_1x1: {
         typeId: "slot_1x1",
         name: "Slot machine",
         width: 2,
-        heigh: 2,
+        height: 2,
         footprint: [
             [1, 1],
             [1, 1],
