@@ -12,3 +12,11 @@
   background-position: center;
   filter: blur(2px) brightness(0.7);
 }
+
+.main-container {
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  width: 100vw;
+  height: 90vh;
+}
