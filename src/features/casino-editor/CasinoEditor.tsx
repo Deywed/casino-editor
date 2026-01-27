@@ -4,23 +4,33 @@ import { useMemo } from "react";
 import type { CasinoObjectInstance } from "../../core/ObjectDefinitions";
 import { getOccupiedCells } from "../../utils/GridUtils";
 import { CELL_SIZE, GRID_SIZE } from "../../utils/Constants";
+import { Toolbox } from "./components/Toolbox";
 
 export const CasinoEditor = () => {
   // Primer objekta
-  const object: CasinoObjectInstance = {
+  const object1: CasinoObjectInstance = {
     instanceId: "obj-1",
     typeId: "slot_1x1",
     originX: 4,
     originY: 3,
   };
+  const object2: CasinoObjectInstance = {
+    instanceId: "obj-2",
+    typeId: "slot_1x1",
+    originX: 7,
+    originY: 3,
+  };
 
   // Izračunaj zauzete ćelije (ENGINE LOGIKA)
+  const objects: CasinoObjectInstance[] = [object1, object2];
+
   const occupiedCells = useMemo(() => {
-    return getOccupiedCells(object);
-  }, [object]);
+    return objects.flatMap(getOccupiedCells);
+  }, [objects]);
 
   return (
     <div className="main-container">
+      <Toolbox />
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
@@ -55,7 +65,7 @@ export const CasinoEditor = () => {
               key={`occ-${cell.x}-${cell.y}`}
               draw={(g) => {
                 g.clear();
-                g.beginFill(0x1ff00, 0.6);
+                g.beginFill("red", 0.6);
                 g.drawRect(
                   cell.x * CELL_SIZE,
                   cell.y * CELL_SIZE,

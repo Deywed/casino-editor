@@ -24,7 +24,6 @@ export const getOccupiedCells = (instance: CasinoObjectInstance): GridPos[] => {
       }
     }
   }
-
   return occupied;
 };
 
