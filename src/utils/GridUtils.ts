@@ -8,34 +8,54 @@ export interface GridPos {
   y: number;
 }
 
-export const getOccupiedCells = (instance: CasinoObjectInstance): GridPos[] => {
-  const def = OBJECT_CATALOG[instance.typeId];
-  if (!def) return [];
+export const getOccupiedCells = (
+  instance: CasinoObjectInstance
+): Set<string> => {
+  const obj = OBJECT_CATALOG[instance.typeId];
+  const occupiedCells = new Set<string>();
 
-  const occupied: GridPos[] = [];
-
-  for (let i = 0; i < def.height; i++) {
-    for (let j = 0; j < def.width; j++) {
-      if (def.footprint[i][j] === 1) {
-        occupied.push({
-          x: instance.originX + j,
-          y: instance.originY + i,
-        });
+  for (let y = 0; y < obj.height; y++) {
+    for (let x = 0; x < obj.width; x++) {
+      if (obj.footprint[y][x] === 1) {
+        occupiedCells.add(`${instance.originX + x},${instance.originY + y}`);
       }
     }
   }
-  return occupied;
+  return occupiedCells;
 };
 
 export const checkCollision = (
-  obj1: CasinoObjectInstance,
-  obj2: CasinoObjectInstance
+  a: CasinoObjectInstance,
+  b: CasinoObjectInstance
 ): boolean => {
-  const cells1 = getOccupiedCells(obj1);
-  const cells2 = getOccupiedCells(obj2);
+  const A = getOccupiedCells(a);
+  const B = getOccupiedCells(b);
 
-  for (const c1 of cells1)
-    for (const c2 of cells2) if (c1.x === c2.x && c1.y === c2.y) return true;
+  for (const c of A) {
+    if (B.has(c)) return true;
+  }
 
   return false;
 };
+
+export function collides(
+  x: number,
+  y: number,
+  typeId: string,
+  instances: CasinoObjectInstance[]
+) {
+  const newObj: CasinoObjectInstance = {
+    instanceId: "preview",
+    typeId,
+    originX: x,
+    originY: y,
+  };
+
+  for (const inst of instances) {
+    if (checkCollision(newObj, inst)) {
+      return true;
+    }
+  }
+
+  return false;
+}

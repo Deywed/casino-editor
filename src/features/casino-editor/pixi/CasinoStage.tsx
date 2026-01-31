@@ -5,6 +5,7 @@ import type { CasinoObjectInstance } from "../../../core/ObjectDefinitions";
 import { InstancesLayer } from "./InstancesLayer";
 import { Rectangle } from "pixi.js";
 import { PreviewLayer } from "./PreviewLayer";
+import { collides } from "../../../utils/GridUtils";
 
 export interface CasinoStageProps {
   selectedTool: string | null;
@@ -55,6 +56,12 @@ export const CasinoStage = ({
           const x = Math.floor(pos.x / CELL_SIZE);
           const y = Math.floor(pos.y / CELL_SIZE);
 
+          const collision = collides(x, y, selectedTool, instances);
+          if (collision) {
+            console.log("Collision detected, cannot place object here.");
+            return;
+          }
+
           onAddInstance({
             instanceId: crypto.randomUUID(),
             typeId: selectedTool,
@@ -65,7 +72,11 @@ export const CasinoStage = ({
         onpointerleave={() => setHoverCell(null)}
       >
         <GridLayer />
-        <PreviewLayer selectedTool={selectedTool} hoverCell={hoverCell} />
+        <PreviewLayer
+          selectedTool={selectedTool}
+          hoverCell={hoverCell}
+          instances={instances}
+        />
         <InstancesLayer instances={instances} />
       </Container>
     </Stage>
