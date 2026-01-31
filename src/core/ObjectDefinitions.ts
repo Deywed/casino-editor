@@ -1,3 +1,5 @@
+import slotImg from "../assets/slot.png";
+
 export type Footprint = number[][];
 
 export interface CasinoObjectDef {
@@ -6,6 +8,7 @@ export interface CasinoObjectDef {
   width: number;
   height: number;
   footprint: Footprint;
+  imgSrc?: string;
 }
 
 export interface CasinoObjectInstance {
@@ -25,6 +28,7 @@ export const OBJECT_CATALOG: Record<string, CasinoObjectDef> = {
       [1, 1],
       [1, 1],
     ],
+    imgSrc: slotImg,
   },
   roulette_2x2: {
     typeId: "roullete_2x2",
@@ -37,5 +41,6 @@ export const OBJECT_CATALOG: Record<string, CasinoObjectDef> = {
       [1, 1, 1, 1],
       [1, 1, 1, 1],
     ],
+    imgSrc: "roulette_2x2.png",
   },
 };
