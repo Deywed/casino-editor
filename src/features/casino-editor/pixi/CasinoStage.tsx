@@ -13,6 +13,7 @@ export interface CasinoStageProps {
   onAddInstance: (instance: CasinoObjectInstance) => void;
   setHoverCell: (pos: { x: number; y: number } | null) => void;
   hoverCell: { x: number; y: number } | null;
+  rotation: number;
 }
 
 export const CasinoStage = ({
@@ -21,6 +22,7 @@ export const CasinoStage = ({
   onAddInstance,
   setHoverCell,
   hoverCell,
+  rotation,
 }: CasinoStageProps) => {
   return (
     <Stage
@@ -67,6 +69,7 @@ export const CasinoStage = ({
             typeId: selectedTool,
             originX: x,
             originY: y,
+            rotation: rotation,
           });
         }}
         onpointerleave={() => setHoverCell(null)}
@@ -76,6 +79,7 @@ export const CasinoStage = ({
           selectedTool={selectedTool}
           hoverCell={hoverCell}
           instances={instances}
+          rotation={rotation}
         />
         <InstancesLayer instances={instances} />
       </Container>

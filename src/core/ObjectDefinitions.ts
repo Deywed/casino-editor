@@ -16,6 +16,7 @@ export interface CasinoObjectInstance {
   typeId: string;
   originX: number;
   originY: number;
+  rotation: number;
 }
 
 export const OBJECT_CATALOG: Record<string, CasinoObjectDef> = {

@@ -4,6 +4,7 @@ import {
   type CasinoObjectInstance,
 } from "../../../core/ObjectDefinitions";
 import { CELL_SIZE } from "../../../utils/Constants";
+import { rotateObject } from "../../../utils/GridUtils";
 
 export interface InstancesLayerProps {
   instances: CasinoObjectInstance[];
@@ -12,16 +13,25 @@ export interface InstancesLayerProps {
 export const InstancesLayer = ({ instances }: InstancesLayerProps) => {
   return (
     <>
-      {instances.map((instance) => {
-        const def = OBJECT_CATALOG[instance.typeId];
+      {instances.map((inst) => {
+        const def = OBJECT_CATALOG[inst.typeId];
+
+        // footprint posle rotacije — daje nove dimenzije
+        const fp = rotateObject(def.footprint, inst.rotation);
+
+        const width = fp[0].length * CELL_SIZE;
+        const height = fp.length * CELL_SIZE;
+
         return (
           <Sprite
-            key={instance.instanceId}
+            key={inst.instanceId}
             image={def.imgSrc}
-            x={instance.originX * CELL_SIZE}
-            y={instance.originY * CELL_SIZE}
-            width={def.width * CELL_SIZE}
-            height={def.height * CELL_SIZE}
+            anchor={0.5}
+            x={inst.originX * CELL_SIZE + width / 2}
+            y={inst.originY * CELL_SIZE + height / 2}
+            width={width}
+            height={height}
+            angle={inst.rotation}
           />
         );
       })}

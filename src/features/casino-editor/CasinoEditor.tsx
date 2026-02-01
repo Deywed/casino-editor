@@ -1,5 +1,5 @@
 import "./CasinoEditor.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { CasinoObjectInstance } from "../../core/ObjectDefinitions";
 import { Toolbox } from "./components/Toolbox";
 import { CasinoStage } from "./pixi/CasinoStage";
@@ -14,6 +14,19 @@ export const CasinoEditor = () => {
   const [hoverCell, setHoverCell] = useState<{ x: number; y: number } | null>(
     null
   );
+  const [rotation, setRotation] = useState(0);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "r") {
+        setRotation((prev) => (prev + 90) % 360);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+    };
+  }, []);
 
   return (
     <div className="main-container">
@@ -26,6 +39,7 @@ export const CasinoEditor = () => {
         onAddInstance={(inst) => setInstances((prev) => [...prev, inst])}
         setHoverCell={setHoverCell}
         hoverCell={hoverCell}
+        rotation={rotation}
       />
     </div>
   );
