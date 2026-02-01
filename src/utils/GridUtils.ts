@@ -1,3 +1,4 @@
+import { Rectangle, Texture } from "pixi.js";
 import {
   OBJECT_CATALOG,
   type CasinoObjectInstance,
