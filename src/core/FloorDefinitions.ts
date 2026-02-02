@@ -7,6 +7,6 @@ export const TILE_FLOR: TileType = 1;
 export const TILE_OCCUPIED: TileType = 2;
 
 export const DEFAULT_GRID_SIZE = {
-  rows: 50,
-  cols: 50,
+  rows: 10,
+  cols: 10,
 };

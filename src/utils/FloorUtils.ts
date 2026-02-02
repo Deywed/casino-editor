@@ -1,6 +1,6 @@
 import {
   type FloorMap,
-  TileType,
+  type TileType,
   TILE_VOID,
   TILE_FLOR,
   TILE_OCCUPIED,
@@ -29,7 +29,7 @@ export const isValidCoordinate = (
 };
 
 export const isFloor = (floor: FloorMap, x: number, y: number): boolean => {
-  if (!isValidCoordinate) return false;
+  if (!isValidCoordinate(floor, x, y)) return false;
 
   return floor[y][x] === TILE_FLOR;
 };

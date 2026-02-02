@@ -11,6 +11,7 @@ type PreviewLayerProps = {
   hoverCell: { x: number; y: number } | null;
   instances: CasinoObjectInstance[];
   rotation?: number;
+  gridSize: { rows: number; cols: number };
 };
 
 export const PreviewLayer = ({
@@ -18,16 +19,29 @@ export const PreviewLayer = ({
   hoverCell,
   instances,
   rotation = 0,
+  gridSize,
 }: PreviewLayerProps) => {
   if (!selectedTool || !hoverCell) return null;
 
   const def = OBJECT_CATALOG[selectedTool];
+  if (!def) return null;
+
+  // ako je hover van grida ne prikazuje se preview
+  if (
+    hoverCell.x < 0 ||
+    hoverCell.y < 0 ||
+    hoverCell.x >= gridSize.cols ||
+    hoverCell.y >= gridSize.rows
+  ) {
+    return null;
+  }
+
   const collision = collides(
     hoverCell.x,
     hoverCell.y,
     selectedTool,
     instances,
-    rotation
+    rotation,
   );
   const fp = rotateObject(def.footprint, rotation);
 
