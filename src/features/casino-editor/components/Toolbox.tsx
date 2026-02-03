@@ -25,7 +25,7 @@ export const Toolbox = ({
           onClick={() => onSelectTool(null)}
           disabled={!selectedTool}
           className={`
-            px-2 py-1 rounded border text-black
+            px-2 py-1 rounded border text-black!
             ${
               selectedTool
                 ? "border-gray-400 bg-gray-800 hover:bg-gray-300 text-gray-800"
@@ -35,14 +35,14 @@ export const Toolbox = ({
           title="Poništi selekciju"
           aria-label="Poništi selekciju"
         >
-          X
+          x
         </button>
 
         <div className="flex gap-2">
           <button
             type="button"
             onClick={onExpandGrid}
-            className="px-2 py-1 rounded border border-gray-400 bg-white text-black hover:bg-gray-200"
+            className="px-2 py-1 rounded border border-gray-400 bg-white text-black! hover:bg-gray-200"
             title="Dodaj 1 red i 1 kolonu"
             aria-label="Povećaj grid"
           >
@@ -53,7 +53,7 @@ export const Toolbox = ({
             type="button"
             onClick={onShrinkGrid}
             disabled={!canShrink}
-            className={`px-2 py-1 rounded border text-black ${
+            className={`px-2 py-1 rounded border text-black! ${
               canShrink
                 ? "border-gray-400 bg-white hover:bg-gray-200"
                 : "border-gray-200 bg-gray-200 text-gray-400 cursor-not-allowed"
