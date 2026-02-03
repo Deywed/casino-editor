@@ -9,7 +9,7 @@ export interface GridPos {
 }
 
 export const getOccupiedCells = (
-  instance: CasinoObjectInstance,
+  instance: CasinoObjectInstance
 ): Set<string> => {
   const obj = OBJECT_CATALOG[instance.typeId];
   const rotatedFootprint = rotateObject(obj.footprint, instance.rotation);
@@ -40,7 +40,7 @@ export const getOccupiedCells = (
 */
 export const checkCollision = (
   a: CasinoObjectInstance,
-  b: CasinoObjectInstance,
+  b: CasinoObjectInstance
 ): boolean => {
   const A = getOccupiedCells(a);
   const B = getOccupiedCells(b);
@@ -57,7 +57,7 @@ export function collides(
   y: number,
   typeId: string,
   instances: CasinoObjectInstance[],
-  rotation: number = 0,
+  rotation: number = 0
 ) {
   /* 
     kreira fejk instancu objekta sa zadatim parametrima kako bi mogao da koristi funkicju
@@ -91,10 +91,11 @@ export function rotateObject(matrix: number[][], rotation: number) {
 }
 
 function rotate90(matrix: number[][]): number[][] {
+  //translacija i rotacija matrice
   const height = matrix.length;
   const width = matrix[0].length;
   const rotated: number[][] = Array.from({ length: width }, () =>
-    Array.from({ length: height }, () => 0),
+    Array.from({ length: height }, () => 0)
   );
 
   for (let y = 0; y < height; y++) {
@@ -102,14 +103,13 @@ function rotate90(matrix: number[][]): number[][] {
       rotated[x][height - y - 1] = matrix[y][x];
     }
   }
-
   return rotated;
 }
 
 export function instanceFitsInGrid(
   instance: CasinoObjectInstance,
   rows: number,
-  cols: number,
+  cols: number
 ): boolean {
   // funkcija proverava da li objekat staje u grid - služi da kada zelimo da smanjimo grid za jedan red ili jednu kolonu da
   // funkcija proveri koji sve objekti neće da stanu u novi grid i da ih obriše
@@ -132,7 +132,7 @@ export function instanceFitsInGrid(
 export function filterInstancesToFitGrid(
   instances: CasinoObjectInstance[],
   rows: number,
-  cols: number,
+  cols: number
 ): CasinoObjectInstance[] {
   return instances.filter((inst) => instanceFitsInGrid(inst, rows, cols));
 }
