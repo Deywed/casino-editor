@@ -26,7 +26,7 @@ export const PreviewLayer = ({
   const def = OBJECT_CATALOG[selectedTool];
   if (!def) return null;
 
-  // ako je hover van grida ne prikazuje se preview
+  // 1. Provera granica grida
   if (
     hoverCell.x < 0 ||
     hoverCell.y < 0 ||
@@ -35,19 +35,23 @@ export const PreviewLayer = ({
   ) {
     return null;
   }
-  const fp = rotateObject(def.footprint, rotation);
 
-  // 1. Izračunaj TRENUTNE dimenzije na gridu nakon rotacije
+  // 2. Logička rotacija matrice za proračun zauzeća i centra
+  const fp = rotateObject(def.footprint, rotation);
   const currentCellsWide = fp[0].length;
   const currentCellsHigh = fp.length;
 
-  const pixelWidth = currentCellsWide * CELL_SIZE;
-  const pixelHeight = currentCellsHigh * CELL_SIZE;
+  // 3. POZICIJA (PosX/Y): Računamo centar na osnovu TRENUTNOG footprinta (u pikselima)
+  // Ovo osigurava da preview uvek bude centriran na poljima koja bi zauzeo
+  const posX = hoverCell.x * CELL_SIZE + (currentCellsWide * CELL_SIZE) / 2;
+  const posY = hoverCell.y * CELL_SIZE + (currentCellsHigh * CELL_SIZE) / 2;
 
-  // 2. Pozicioniraj tako da centar (anchor 0.5) legne tačno u sredinu zauzetog prostora
-  const posX = hoverCell.x * CELL_SIZE + pixelWidth / 2;
-  const posY = hoverCell.y * CELL_SIZE + pixelHeight / 2;
+  // 4. VIZUELNA VELIČINA: Koristimo originalne dimenzije iz kataloga.
+  // Pixi-jev 'angle' će zarotirati sprajt bez da ga deformiše (stretch/squash).
+  const visualWidth = def.width * CELL_SIZE;
+  const visualHeight = def.height * CELL_SIZE;
 
+  // 5. Provera kolizije za bojenje (tint)
   const collision = collides(
     hoverCell.x,
     hoverCell.y,
@@ -62,8 +66,8 @@ export const PreviewLayer = ({
       anchor={0.5}
       x={posX}
       y={posY}
-      width={pixelWidth} // Koristi dinamičku širinu
-      height={pixelHeight} // Koristi dinamičku visinu
+      width={visualWidth} // Originalna širina (ne rasteže se)
+      height={visualHeight} // Originalna visina (ne rasteže se)
       alpha={0.5}
       tint={collision ? 0xff0000 : 0x00ff00}
       angle={rotation}
