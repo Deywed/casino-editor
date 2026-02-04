@@ -1,6 +1,7 @@
 import slotImg from "../assets/slot.png";
 import slotSheetImg from "../assets/edited_slot.png";
 import ruletImg from "../assets/rulet.png";
+import pokerTableImg from "../assets/poker-table.png";
 
 export type Footprint = number[][];
 
@@ -33,13 +34,9 @@ export const OBJECT_CATALOG: Record<string, CasinoObjectDef> = {
   slot_1x1: {
     typeId: "slot_1x1",
     name: "Slot machine",
-    width: 2,
-    height: 3,
-    footprint: [
-      [1, 1],
-      [1, 1],
-      [1, 1],
-    ],
+    width: 1,
+    height: 2,
+    footprint: [[1], [1]],
     imgSrc: slotImg,
     animation: {
       sheetUrl: slotSheetImg,
@@ -52,13 +49,23 @@ export const OBJECT_CATALOG: Record<string, CasinoObjectDef> = {
     typeId: "roulette_2x2",
     name: "Roulette Table",
     width: 4,
-    height: 4,
+    height: 3,
     footprint: [
-      [1, 1, 1, 1],
       [1, 1, 1, 1],
       [1, 1, 1, 1],
       [1, 1, 1, 1],
     ],
     imgSrc: ruletImg,
+  },
+  poker_table: {
+    typeId: "poker_table",
+    name: "Poker Table",
+    width: 3,
+    height: 2,
+    footprint: [
+      [1, 1, 1],
+      [1, 1, 1],
+    ],
+    imgSrc: pokerTableImg,
   },
 };
