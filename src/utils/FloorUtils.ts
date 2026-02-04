@@ -2,7 +2,7 @@ import {
   type FloorMap,
   type TileType,
   TILE_VOID,
-  TILE_FLOR,
+  TILE_FLOOR,
   TILE_OCCUPIED,
 } from "../core/FloorDefinitions";
 
@@ -31,7 +31,7 @@ export const isValidCoordinate = (
 export const isFloor = (floor: FloorMap, x: number, y: number): boolean => {
   if (!isValidCoordinate(floor, x, y)) return false;
 
-  return floor[y][x] === TILE_FLOR;
+  return floor[y][x] === TILE_FLOOR;
 };
 
 export const isOccupied = (floor: FloorMap, x: number, y: number): boolean => {
@@ -57,6 +57,40 @@ export const toggleTile = (
 
   const newFloor = floor.map((row) => [...row]);
   newFloor[y][x] = type;
+
+  return newFloor;
+};
+
+export const setTiles = (
+  floor: FloorMap,
+  cells: Array<{ x: number; y: number }>,
+  type: TileType,
+): FloorMap => {
+  const newFloor = floor.map((row) => [...row]);
+
+  for (const { x, y } of cells) {
+    if (!isValidCoordinate(newFloor, x, y)) continue;
+
+    newFloor[y][x] = type;
+  }
+
+  return newFloor;
+};
+
+export const resizeFloorPreserve = (
+  floor: FloorMap,
+  rows: number,
+  cols: number,
+): FloorMap => {
+  const newFloor: FloorMap = [];
+
+  for (let y = 0; y < rows; y++) {
+    const row: TileType[] = [];
+
+    for (let x = 0; x < cols; x++) row.push(floor[y]?.[x] ?? TILE_VOID);
+
+    newFloor.push(row);
+  }
 
   return newFloor;
 };

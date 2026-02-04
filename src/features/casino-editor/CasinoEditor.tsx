@@ -3,8 +3,16 @@ import { useEffect, useState } from "react";
 import type { CasinoObjectInstance } from "../../core/ObjectDefinitions";
 import { Toolbox } from "./components/Toolbox";
 import { CasinoStage } from "./pixi/CasinoStage";
-import { DEFAULT_GRID_SIZE } from "../../core/FloorDefinitions";
-import { filterInstancesToFitGrid } from "../../utils/GridUtils";
+import { DEFAULT_GRID_SIZE, TILE_FLOOR } from "../../core/FloorDefinitions";
+import {
+  filterInstancesToFitGrid,
+  getOccupiedCellList,
+} from "../../utils/GridUtils";
+import {
+  createFloor,
+  resizeFloorPreserve,
+  setTiles,
+} from "../../utils/FloorUtils";
 
 export const CasinoEditor = () => {
   // const occupiedCells = useMemo(() => {
@@ -20,6 +28,10 @@ export const CasinoEditor = () => {
 
   const [gridSize, setGridSize] = useState(DEFAULT_GRID_SIZE);
 
+  const [floor, setFloor] = useState(() =>
+    createFloor(DEFAULT_GRID_SIZE.rows, DEFAULT_GRID_SIZE.cols),
+  );
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "r") {
@@ -33,10 +45,11 @@ export const CasinoEditor = () => {
   }, []);
 
   const expandGrid = () => {
-    setGridSize((prev) => ({
-      rows: prev.rows + 1,
-      cols: prev.cols + 1,
-    }));
+    setGridSize((prev) => {
+      const next = { rows: prev.rows + 1, cols: prev.cols + 1 };
+      setFloor((old) => resizeFloorPreserve(old, next.rows, next.cols));
+      return next;
+    });
   };
 
   const shrinkGrid = () => {
@@ -44,8 +57,23 @@ export const CasinoEditor = () => {
       const newRows = Math.max(1, prev.rows - 1);
       const newCols = Math.max(1, prev.cols - 1);
 
-      // brisemo instance koje ne staju u novi grid
-      setInstances((old) => filterInstancesToFitGrid(old, newRows, newCols));
+      // instance koje ispadaju iz grida
+      setInstances((old) => {
+        const kept = filterInstancesToFitGrid(old, newRows, newCols);
+        const removed = old.filter((inst) => !kept.includes(inst));
+
+        // kad se obrišu zbog resize ispod njih se vraca TILE_FLOOR
+        if (removed.length) {
+          const removedCells = removed.flatMap((inst) =>
+            getOccupiedCellList(inst),
+          );
+          setFloor((f) => setTiles(f, removedCells, TILE_FLOOR));
+        }
+
+        return kept;
+      });
+
+      setFloor((old) => resizeFloorPreserve(old, newRows, newCols));
 
       setHoverCell((hc) => {
         if (!hc) return null;
@@ -76,6 +104,9 @@ export const CasinoEditor = () => {
         hoverCell={hoverCell}
         rotation={rotation}
         gridSize={gridSize}
+        floor={floor}
+        setFloor={setFloor}
+        setInstances={setInstances}
       />
     </div>
   );
