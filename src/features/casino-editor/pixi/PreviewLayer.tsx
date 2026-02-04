@@ -5,6 +5,7 @@ import {
 } from "../../../core/ObjectDefinitions";
 import { CELL_SIZE } from "../../../utils/Constants";
 import { collides, rotateObject } from "../../../utils/GridUtils";
+import { TILE_FLOOR, type FloorMap } from "../../../core/FloorDefinitions";
 
 type PreviewLayerProps = {
   selectedTool: string | null;
@@ -12,6 +13,7 @@ type PreviewLayerProps = {
   instances: CasinoObjectInstance[];
   rotation?: number;
   gridSize: { rows: number; cols: number };
+  floor: FloorMap;
 };
 
 export const PreviewLayer = ({
@@ -20,6 +22,7 @@ export const PreviewLayer = ({
   instances,
   rotation = 0,
   gridSize,
+  floor,
 }: PreviewLayerProps) => {
   if (!selectedTool || !hoverCell) return null;
 
@@ -57,8 +60,33 @@ export const PreviewLayer = ({
     hoverCell.y,
     selectedTool,
     instances,
-    rotation
+    rotation,
   );
+
+  let fitsFloor = true;
+  for (let dy = 0; dy < fp.length; dy++) {
+    for (let dx = 0; dx < fp[0].length; dx++) {
+      if (fp[dy][dx] !== 1) continue;
+
+      const tx = hoverCell.x + dx;
+      const ty = hoverCell.y + dy;
+
+      // ako footprint izlazi van grida ili nije FLOOR onda ne moze
+      if (
+        ty < 0 ||
+        ty >= gridSize.rows ||
+        tx < 0 ||
+        tx >= gridSize.cols ||
+        floor[ty]?.[tx] !== TILE_FLOOR
+      ) {
+        fitsFloor = false;
+        break;
+      }
+    }
+    if (!fitsFloor) break;
+  }
+
+  const canPlace = !collision && fitsFloor;
 
   return (
     <Sprite
@@ -69,7 +97,7 @@ export const PreviewLayer = ({
       width={visualWidth} // Originalna širina (ne rasteže se)
       height={visualHeight} // Originalna visina (ne rasteže se)
       alpha={0.5}
-      tint={collision ? 0xff0000 : 0x00ff00}
+      tint={canPlace ? 0x00ff00 : 0xff0000}
       angle={rotation}
     />
   );

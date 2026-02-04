@@ -1,4 +1,3 @@
-import { Rectangle, Texture } from "pixi.js";
 import {
   OBJECT_CATALOG,
   type CasinoObjectInstance,
@@ -10,7 +9,7 @@ export interface GridPos {
 }
 
 export const getOccupiedCells = (
-  instance: CasinoObjectInstance
+  instance: CasinoObjectInstance,
 ): Set<string> => {
   const obj = OBJECT_CATALOG[instance.typeId];
   const rotatedFootprint = rotateObject(obj.footprint, instance.rotation);
@@ -41,7 +40,7 @@ export const getOccupiedCells = (
 */
 export const checkCollision = (
   a: CasinoObjectInstance,
-  b: CasinoObjectInstance
+  b: CasinoObjectInstance,
 ): boolean => {
   const A = getOccupiedCells(a);
   const B = getOccupiedCells(b);
@@ -58,7 +57,7 @@ export function collides(
   y: number,
   typeId: string,
   instances: CasinoObjectInstance[],
-  rotation: number = 0
+  rotation: number = 0,
 ) {
   /* 
     kreira fejk instancu objekta sa zadatim parametrima kako bi mogao da koristi funkicju
@@ -96,7 +95,7 @@ function rotate90(matrix: number[][]): number[][] {
   const height = matrix.length;
   const width = matrix[0].length;
   const rotated: number[][] = Array.from({ length: width }, () =>
-    Array.from({ length: height }, () => 0)
+    Array.from({ length: height }, () => 0),
   );
 
   for (let y = 0; y < height; y++) {
@@ -110,7 +109,7 @@ function rotate90(matrix: number[][]): number[][] {
 export function instanceFitsInGrid(
   instance: CasinoObjectInstance,
   rows: number,
-  cols: number
+  cols: number,
 ): boolean {
   // funkcija proverava da li objekat staje u grid - služi da kada zelimo da smanjimo grid za jedan red ili jednu kolonu da
   // funkcija proveri koji sve objekti neće da stanu u novi grid i da ih obriše
@@ -133,7 +132,38 @@ export function instanceFitsInGrid(
 export function filterInstancesToFitGrid(
   instances: CasinoObjectInstance[],
   rows: number,
-  cols: number
+  cols: number,
 ): CasinoObjectInstance[] {
   return instances.filter((inst) => instanceFitsInGrid(inst, rows, cols));
 }
+
+export const getOccupiedCellList = (
+  instance: CasinoObjectInstance,
+): Array<{ x: number; y: number }> => {
+  const obj = OBJECT_CATALOG[instance.typeId];
+  const rotatedFootprint = rotateObject(obj.footprint, instance.rotation);
+  const cells: Array<{ x: number; y: number }> = [];
+
+  for (let y = 0; y < rotatedFootprint.length; y++) {
+    for (let x = 0; x < rotatedFootprint[0].length; x++) {
+      if (rotatedFootprint[y][x] === 1) {
+        cells.push({ x: instance.originX + x, y: instance.originY + y });
+      }
+    }
+  }
+
+  return cells;
+};
+
+export const findInstanceAtCell = (
+  instances: CasinoObjectInstance[],
+  x: number,
+  y: number,
+): CasinoObjectInstance | null => {
+  const key = `${x},${y}`;
+
+  for (const inst of instances)
+    if (getOccupiedCells(inst).has(key)) return inst;
+
+  return null;
+};

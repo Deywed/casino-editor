@@ -1,5 +1,8 @@
 import { OBJECT_CATALOG } from "../../../core/ObjectDefinitions";
 
+export const TOOL_FLOOR = "__TOOL_FLOOR__";
+export const TOOL_VOID = "__TOOL_VOID__";
+
 type ToolboxProps = {
   selectedTool: string | null;
   setSelectedTool: (typeId: string | null) => void;
@@ -61,6 +64,36 @@ export const Toolbox = ({
           </button>
         </div>
 
+        <hr className="border-gray-300" />
+
+        {/* Floor alati */}
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => onSelectTool(TOOL_FLOOR)}
+            className={`px-3 py-1 rounded border transition-colors flex-1 ${
+              selectedTool === TOOL_FLOOR
+                ? "border-green-600 bg-green-100"
+                : "border-gray-300 bg-white hover:bg-gray-200 text-black!"
+            }`}
+            title="Postavi tile na FLOOR"
+          >
+            Pod
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onSelectTool(TOOL_VOID)}
+            className={`px-3 py-1 rounded border transition-colors flex-1 ${
+              selectedTool === TOOL_VOID
+                ? "border-yellow-700 bg-yellow-100"
+                : "border-gray-300 bg-white hover:bg-gray-200 text-black!"
+            }`}
+            title="Postavi tile na VOID (ako pogodi objekat: obriši ga)"
+          >
+            Obrisi pod
+          </button>
+        </div>
         <hr className="border-gray-300" />
 
         {/* Katalog objekata */}
