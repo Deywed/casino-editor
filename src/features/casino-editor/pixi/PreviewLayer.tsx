@@ -22,6 +22,19 @@ export const PreviewLayer = ({
   if (!selectedTool || !hoverCell) return null;
 
   const def = OBJECT_CATALOG[selectedTool];
+  const fp = rotateObject(def.footprint, rotation);
+
+  // 1. Izračunaj TRENUTNE dimenzije na gridu nakon rotacije
+  const currentCellsWide = fp[0].length;
+  const currentCellsHigh = fp.length;
+
+  const pixelWidth = currentCellsWide * CELL_SIZE;
+  const pixelHeight = currentCellsHigh * CELL_SIZE;
+
+  // 2. Pozicioniraj tako da centar (anchor 0.5) legne tačno u sredinu zauzetog prostora
+  const posX = hoverCell.x * CELL_SIZE + pixelWidth / 2;
+  const posY = hoverCell.y * CELL_SIZE + pixelHeight / 2;
+
   const collision = collides(
     hoverCell.x,
     hoverCell.y,
@@ -29,19 +42,15 @@ export const PreviewLayer = ({
     instances,
     rotation
   );
-  const fp = rotateObject(def.footprint, rotation);
-
-  const width = fp[0].length * CELL_SIZE;
-  const height = fp.length * CELL_SIZE;
 
   return (
     <Sprite
       image={def.imgSrc}
-      anchor={0.5} // ROTIRA OKO CENTRA
-      x={hoverCell.x * CELL_SIZE + width / 2}
-      y={hoverCell.y * CELL_SIZE + height / 2}
-      width={width}
-      height={height}
+      anchor={0.5}
+      x={posX}
+      y={posY}
+      width={pixelWidth} // Koristi dinamičku širinu
+      height={pixelHeight} // Koristi dinamičku visinu
       alpha={0.5}
       tint={collision ? 0xff0000 : 0x00ff00}
       angle={rotation}
