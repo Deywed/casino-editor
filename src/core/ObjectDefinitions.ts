@@ -49,9 +49,8 @@ export const OBJECT_CATALOG: Record<string, CasinoObjectDef> = {
     typeId: "roulette_2x2",
     name: "Roulette Table",
     width: 4,
-    height: 3,
+    height: 2,
     footprint: [
-      [1, 1, 1, 1],
       [1, 1, 1, 1],
       [1, 1, 1, 1],
     ],

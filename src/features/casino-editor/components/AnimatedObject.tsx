@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { CasinoObjectDef } from "../../../core/ObjectDefinitions";
 import type { Texture } from "pixi.js";
 import { AnimationUtils } from "../../../utils/AnimationUtils";
@@ -52,7 +52,7 @@ export const AnimatedObject = ({
       width={width}
       height={height}
       angle={rotation}
-      animationSpeed={0.15} // Brzina animacije
+      animationSpeed={0.15}
       isPlaying={true}
       loop={true}
     />

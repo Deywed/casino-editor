@@ -15,23 +15,20 @@ import {
 } from "../../utils/FloorUtils";
 
 export const CasinoEditor = () => {
-  // const occupiedCells = useMemo(() => {
-  //   return getOccupiedCells(object);
-  // }, [object]);
-
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
   const [instances, setInstances] = useState<CasinoObjectInstance[]>([]);
   const [hoverCell, setHoverCell] = useState<{ x: number; y: number } | null>(
-    null,
+    null
   );
   const [rotation, setRotation] = useState(0);
 
   const [gridSize, setGridSize] = useState(DEFAULT_GRID_SIZE);
 
   const [floor, setFloor] = useState(() =>
-    createFloor(DEFAULT_GRID_SIZE.rows, DEFAULT_GRID_SIZE.cols),
+    createFloor(DEFAULT_GRID_SIZE.rows, DEFAULT_GRID_SIZE.cols)
   );
 
+  //-----------gde da smestim ovo??
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "r") {
@@ -65,7 +62,7 @@ export const CasinoEditor = () => {
         // kad se obrišu zbog resize ispod njih se vraca TILE_FLOOR
         if (removed.length) {
           const removedCells = removed.flatMap((inst) =>
-            getOccupiedCellList(inst),
+            getOccupiedCellList(inst)
           );
           setFloor((f) => setTiles(f, removedCells, TILE_FLOOR));
         }

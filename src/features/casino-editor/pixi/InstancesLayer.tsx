@@ -17,19 +17,21 @@ export const InstancesLayer = ({ instances }: InstancesLayerProps) => {
         const def = OBJECT_CATALOG[inst.typeId];
         if (!def) return null;
 
-        // Logički otisak za pozicioniranje centra
+        // Rotacija matrice
         const fp = rotateObject(def.footprint, inst.rotation);
         const currentCellsWide = fp[0].length;
         const currentCellsHigh = fp.length;
 
-        // POZICIJA se računa na osnovu TRENUTNOG footprinta
+        //Kada rotiramo objekat koji nije simetrican, njegov centar se menja u odnosu na originalnu poziciju.
+        //inst.originX * CELL_SIZE nam daje poziciju gornjeg levog ugla objekta
+        //(currentCellsWide * CELL_SIZE) / 2 nam daje pomeraj do centra objekta u pikselima
+        //na ovaj način dobijamo poziciju centra objekta u pikselima
+
         const posX =
           inst.originX * CELL_SIZE + (currentCellsWide * CELL_SIZE) / 2;
         const posY =
           inst.originY * CELL_SIZE + (currentCellsHigh * CELL_SIZE) / 2;
 
-        // VELIČINA sprajta treba da bude fiksna u odnosu na ORIGINALNU definiciju
-        // Rotacija će se pobrinuti za ostalo
         const visualWidth = def.width * CELL_SIZE;
         const visualHeight = def.height * CELL_SIZE;
 
@@ -39,8 +41,8 @@ export const InstancesLayer = ({ instances }: InstancesLayerProps) => {
             def={def}
             x={posX}
             y={posY}
-            width={visualWidth} // Originalna širina
-            height={visualHeight} // Originalna visina
+            width={visualWidth}
+            height={visualHeight}
             rotation={inst.rotation}
           />
         );

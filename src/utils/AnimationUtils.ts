@@ -1,5 +1,4 @@
 import { Assets } from "@pixi/assets";
-import { useEffect } from "react";
 import type { AnimationConfig } from "../core/ObjectDefinitions";
 import { Rectangle, Texture } from "pixi.js";
 

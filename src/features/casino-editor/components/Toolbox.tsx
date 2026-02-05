@@ -22,7 +22,6 @@ export const Toolbox = ({
     <div className="min-h-40 border-2 border-gray-300 rounded-lg p-4 bg-gray-100 min-w-40">
       <h3 className="text-gray-800 mb-2 font-bold">Alati</h3>
       <div className="flex flex-col gap-3">
-        {/* Sekcija za Grid kontrole */}
         <div className="flex gap-2">
           <button
             type="button"
@@ -71,37 +70,30 @@ export const Toolbox = ({
           <button
             type="button"
             onClick={() => onSelectTool(TOOL_FLOOR)}
-            className={`px-3 py-1 rounded border transition-colors flex-1 ${
-              selectedTool === TOOL_FLOOR
-                ? "border-green-600 bg-green-100"
-                : "border-gray-300 bg-white hover:bg-gray-200 text-black!"
-            }`}
+            className={`px-3 py-1 rounded border transition-colors flex-1
+                "border-gray-300 bg-white hover:bg-gray-200 text-black!
+            `}
             title="Postavi tile na FLOOR"
           >
-            Pod
+            Add Tile
           </button>
 
           <button
             type="button"
             onClick={() => onSelectTool(TOOL_VOID)}
-            className={`px-3 py-1 rounded border transition-colors flex-1 ${
-              selectedTool === TOOL_VOID
-                ? "border-yellow-700 bg-yellow-100"
-                : "border-gray-300 bg-white hover:bg-gray-200 text-black!"
-            }`}
+            className={`px-3 py-1 rounded border transition-colors flex-1
+                 text-black!`}
             title="Postavi tile na VOID (ako pogodi objekat: obriši ga)"
           >
-            Obrisi pod
+            Remove Tile
           </button>
         </div>
         <hr className="border-gray-300" />
 
-        {/* Katalog objekata */}
+        {/*"Objekti iz kataloga"*/}
         <div className="flex flex-col gap-2">
           {Object.values(OBJECT_CATALOG).map((tool) => {
             const isActive = selectedTool === tool.typeId;
-
-            // Provera da li je slot machine za različite dimenzije slike
             const isSlot = tool.name === "Slot machine";
 
             return (

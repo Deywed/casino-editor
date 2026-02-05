@@ -12,7 +12,7 @@ export const createFloor = (rows: number, cols: number): FloorMap => {
   for (let i = 0; i < rows; i++) {
     const row: number[] = [];
 
-    for (let j = 0; j < cols; j++) row.push(TILE_VOID);
+    for (let j = 0; j < cols; j++) row.push(TILE_FLOOR);
 
     matrix.push(row);
   }
@@ -23,7 +23,7 @@ export const createFloor = (rows: number, cols: number): FloorMap => {
 export const isValidCoordinate = (
   floor: FloorMap,
   x: number,
-  y: number,
+  y: number
 ): boolean => {
   return y >= 0 && y < floor.length && x >= 0 && x < floor[0].length;
 };
@@ -44,7 +44,7 @@ export const toggleTile = (
   floor: FloorMap,
   x: number,
   y: number,
-  type: TileType,
+  type: TileType
 ) => {
   if (!isValidCoordinate(floor, x, y)) return;
 
@@ -64,7 +64,7 @@ export const toggleTile = (
 export const setTiles = (
   floor: FloorMap,
   cells: Array<{ x: number; y: number }>,
-  type: TileType,
+  type: TileType
 ): FloorMap => {
   const newFloor = floor.map((row) => [...row]);
 
@@ -80,7 +80,7 @@ export const setTiles = (
 export const resizeFloorPreserve = (
   floor: FloorMap,
   rows: number,
-  cols: number,
+  cols: number
 ): FloorMap => {
   const newFloor: FloorMap = [];
 

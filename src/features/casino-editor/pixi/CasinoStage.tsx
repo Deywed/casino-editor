@@ -55,7 +55,7 @@ export const CasinoStage = ({
     x: number,
     y: number,
     typeId: string,
-    rot: number,
+    rot: number
   ) => {
     const def = OBJECT_CATALOG[typeId];
     if (!def) return false;
@@ -123,10 +123,10 @@ export const CasinoStage = ({
               const cells = getOccupiedCellList(inst);
 
               setInstances((prev) =>
-                prev.filter((p) => p.instanceId !== inst.instanceId),
+                prev.filter((p) => p.instanceId !== inst.instanceId)
               );
 
-              // kako si tražio: posle brisanja objekta ispod ide TILE_FLOOR
+              //posle brisanja objekta ispod ide TILE_FLOOR
               setFloor((f) => setTiles(f, cells, TILE_FLOOR));
               return;
             }
